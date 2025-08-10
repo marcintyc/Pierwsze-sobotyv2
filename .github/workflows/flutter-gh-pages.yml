@@ -27,11 +27,17 @@ jobs:
       - name: Enable web
         run: flutter config --enable-web | cat
 
+      - name: Ensure web platform files
+        run: flutter create . --platforms=web | cat
+
       - name: Install dependencies
         run: flutter pub get | cat
 
       - name: Build web
         run: flutter build web --release --base-href /Pierwsze-sobotyv2/ | cat
+
+      - name: Show build output
+        run: ls -la build/web | cat
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -37,11 +37,14 @@ jobs:
       - name: Ensure web platform files (non-overwrite)
         run: flutter create . --platforms=web | cat
 
+      - name: Clean
+        run: flutter clean | cat
+
       - name: Install dependencies
         run: flutter pub get | cat
 
-      - name: Build web
-        run: flutter build web --release --no-tree-shake-icons --base-href "/${{ env.REPO_NAME }}/" | cat
+      - name: Build web (force JS)
+        run: flutter build web --release --no-wasm --no-tree-shake-icons --base-href "/${{ env.REPO_NAME }}/" | cat
 
       - name: Verify build artifacts
         run: |

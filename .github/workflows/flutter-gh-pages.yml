@@ -1,0 +1,36 @@
+name: Flutter Web to GitHub Pages
+
+on:
+  push:
+    branches:
+      - test/testowy
+  workflow_dispatch:
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Flutter version
+        run: flutter --version | cat
+
+      - name: Install dependencies
+        run: flutter pub get | cat
+
+      - name: Build web
+        run: flutter build web --release --base-href /Pierwsze-sobotyv2/ | cat
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: build/web
+          force_orphan: true

@@ -1,0 +1,21 @@
+# Flutter/Dart
+**/build/
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos_tool/
+coverage/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+
+# Generated
+lib/generated/

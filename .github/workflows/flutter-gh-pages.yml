@@ -12,6 +12,9 @@ permissions:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}
+      OWNER: ${{ github.repository_owner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,7 +37,7 @@ jobs:
         run: flutter pub get | cat
 
       - name: Build web
-        run: flutter build web --release --base-href /Pierwsze-sobotyv2/ | cat
+        run: flutter build web --release --base-href "/${{ env.REPO_NAME }}/" | cat
 
       - name: Show build output
         run: ls -la build/web | cat
@@ -46,3 +49,12 @@ jobs:
           publish_branch: gh-pages
           publish_dir: build/web
           force_orphan: true
+
+      - name: Publish deployed URL
+        if: success()
+        run: |
+          URL="https://${OWNER}.github.io/${REPO_NAME}/"
+          echo "::notice title=GitHub Pages::${URL}"
+          echo "### ✅ Deploy zakończony" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Aplikacja jest dostępna pod adresem: ${URL}" >> $GITHUB_STEP_SUMMARY
